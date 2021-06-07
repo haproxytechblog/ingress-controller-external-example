@@ -1,0 +1,21 @@
+[Unit]
+Description="HAProxy Kubernetes Ingress Controller"
+Documentation=https://www.haproxy.com/
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStartPre=/bin/mkdir -p /tmp/haproxy-ingress/etc/
+ExecStartPre=/usr/bin/wget https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/fs/usr/local/etc/haproxy/haproxy.cfg -P /tmp/haproxy-ingress/etc/
+ExecStart=/usr/local/bin/haproxy-ingress-controller --external --configmap=default/haproxy-kubernetes-ingress --program=/usr/sbin/haproxy --disable-ipv6 --ipv4-bind-address=0.0.0.0 --http-bind-port=80 &
+ExecReload=/bin/kill --signal HUP $MAINPID
+KillMode=process
+KillSignal=SIGTERM
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
