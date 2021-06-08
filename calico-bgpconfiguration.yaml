@@ -5,7 +5,7 @@ metadata:
 spec:
   logSeverityScreen: Info
   nodeToNodeMeshEnabled: true
-  asNumber: 65001
+  asNumber: 65000
 
 ---
 apiVersion: projectcalico.org/v3

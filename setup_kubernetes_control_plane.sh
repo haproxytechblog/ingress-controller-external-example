@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODE_IP=$1
+
 # Disable swap, as required by kubelet
 swapoff -a
 
@@ -51,3 +53,9 @@ calicoctl apply -f /vagrant/calico-bgpconfiguration.yaml
 
 # Create ConfigMap for ingress controller
 kubectl create configmap haproxy-kubernetes-ingress
+
+# Set the --node-ip argument for kubelet
+touch /etc/default/kubelet
+echo "KUBELET_EXTRA_ARGS=--node-ip=$NODE_IP" > /etc/default/kubelet
+systemctl daemon-reload
+systemctl restart kubelet

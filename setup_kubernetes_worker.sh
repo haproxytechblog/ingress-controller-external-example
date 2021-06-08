@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODE_IP=$1
+
 # Disable swap, as required by kubelet
 swapoff -a
 
@@ -20,3 +22,13 @@ apt-mark hold kubelet kubeadm kubectl
 
 # Configure the worker node
 kubeadm join --token db1e3e.5044869ec5bc2393 192.168.50.22:6443 --discovery-token-unsafe-skip-ca-verification
+
+mkdir -p /home/vagrant/.kube
+cp /vagrant/admin.conf /home/vagrant/.kube/config
+chown -R vagrant:vagrant /home/vagrant/.kube
+
+# Set the --node-ip argument for kubelet
+touch /etc/default/kubelet
+echo "KUBELET_EXTRA_ARGS=--node-ip=$NODE_IP" > /etc/default/kubelet
+systemctl daemon-reload
+systemctl restart kubelet
