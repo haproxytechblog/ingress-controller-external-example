@@ -73,6 +73,16 @@ Name:         worker2-172-16-189-64-26
 1. Edit the file **bird.conf**, adding the IP ranges to the `protocol bgp` sections:
 
 ```
+# controlplane
+protocol bgp {
+  	local 192.168.50.21 as 65000;
+	neighbor 192.168.50.22 as 65001;
+    import filter {
+	  if net = 172.16.49.64/26 then accept;
+    };
+    export none;
+}
+
 # worker
 protocol bgp {
   	local 192.168.50.21 as 65000;
