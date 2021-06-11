@@ -10,9 +10,9 @@ Vagrant.configure("2") do |config|
       end
     end
 
-    config.vm.define "worker" do |server|
+    config.vm.define "worker1" do |server|
       server.vm.box = "ubuntu/bionic64"
-      server.vm.hostname = "worker"
+      server.vm.hostname = "worker1"
       server.vm.network "private_network", ip: "192.168.50.23"
       server.vm.provision "shell", path: "setup_kubernetes_worker.sh", args: "192.168.50.23"
       server.vm.provider :virtualbox do |vb|

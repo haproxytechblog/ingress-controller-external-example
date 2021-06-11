@@ -9,7 +9,7 @@ Virtual machines include:
 
 * ingress: the HAProxy ingress controller and the Bird router
 * controlplane: The Kubernetes control plane node
-* worker: A Kubernetes worker node
+* worker1: A Kubernetes worker node
 * worker2: Another Kubernetes worker node
 
 ## Try it out
@@ -34,7 +34,7 @@ $ kubectl get nodes
 
 NAME           STATUS   ROLES                  AGE     VERSION
 controlplane   Ready    control-plane,master   4h7m    v1.21.1
-worker         Ready    <none>                 4h2m    v1.21.1
+worker1        Ready    <none>                 4h2m    v1.21.1
 worker2        Ready    <none>                 3h58m   v1.21.1
 
 $ sudo calicoctl node status
@@ -64,7 +64,7 @@ $ kubectl describe blockaffinities | grep -E "Name:|Cidr:"
 
 Name:         controlplane-172-16-49-64-26
   Cidr:     172.16.49.64/26
-Name:         worker-172-16-171-64-26
+Name:         worker1-172-16-171-64-26
   Cidr:     172.16.171.64/26
 Name:         worker2-172-16-189-64-26
   Cidr:     172.16.189.64/26
@@ -84,7 +84,7 @@ protocol bgp {
     export none;
 }
 
-# worker
+# worker1
 protocol bgp {
   	local 192.168.50.21 as 65000;
 	neighbor 192.168.50.23 as 65000;
@@ -189,10 +189,10 @@ $ kubectl apply -f /vagrant/app.yaml
 ```
 $ kubectl get pods -o wide
 NAME                  READY   STATUS    RESTARTS   AGE   IP              NODE      NOMINATED NODE   READINESS GATES
-app-8cfdf9959-5rtdq   1/1     Running   0          20s   172.16.171.67   worker    <none>           <none>
-app-8cfdf9959-gtqj9   1/1     Running   0          20s   172.16.171.65   worker    <none>           <none>
+app-8cfdf9959-5rtdq   1/1     Running   0          20s   172.16.171.67   worker1   <none>           <none>
+app-8cfdf9959-gtqj9   1/1     Running   0          20s   172.16.171.65   worker1   <none>           <none>
 app-8cfdf9959-mt747   1/1     Running   0          20s   172.16.189.66   worker2   <none>           <none>
-app-8cfdf9959-r985c   1/1     Running   0          20s   172.16.171.66   worker    <none>           <none>
+app-8cfdf9959-r985c   1/1     Running   0          20s   172.16.171.66   worker1   <none>           <none>
 app-8cfdf9959-t7qwn   1/1     Running   0          21s   172.16.189.65   worker2   <none>           <none>
 ```
 
