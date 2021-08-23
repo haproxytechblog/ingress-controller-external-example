@@ -13,6 +13,10 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 apt update
 DEBIAN_FRONTEND=noninteractive apt install -y docker-ce
 
+# Change Docker cgroup driver to systemd
+cp /vagrant/daemon.json /etc/docker/
+systemctl restart docker
+
 # Install kubeadm and kubectl
 curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
